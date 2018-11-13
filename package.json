@@ -1,0 +1,8 @@
+{
+  "name": "GradebookMCPS",
+  "version": "1.0.0",
+  "description": "Gradebook helper for MCPS",
+  "main": "src/index.js",
+  "author": "CF12",
+  "license": "MIT"
+}
