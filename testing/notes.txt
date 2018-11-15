@@ -1,0 +1,20 @@
+ENDPOINTS
+============
+POST - https://portal.mcpsmd.org/guardian/home.html
+{
+  account: [Username]
+  ldappassword: [Password]
+  contextData: [HMAC base]
+  pw: [Hex HMAC Digest of unpadded Base64 MD5 digest of password]
+  dbpw: [Hex HMAC Digest of lowercase password]
+}
+
+GET - https://portal.mcpsmd.org/guardian/home.html?ac=logoff
+Logs out
+
+GET - https://portal.mcpsmd.org/guardian/prefs/gradeByCourseSecondary.json
+Gets course data
+
+BEHAVIORS
+============
+- Upon session expiration / logout, all subsequent requests will redirect to login page (302 redirect maybe?)
