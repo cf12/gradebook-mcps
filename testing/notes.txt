@@ -15,6 +15,40 @@ Logs out
 GET - https://portal.mcpsmd.org/guardian/prefs/gradeByCourseSecondary.json
 Gets course data
 
+GET - https://portal.mcpsmd.org/guardian/prefs/assignmentGrade_AssignmentDetail.json
+Gets all assignments from a course
+{
+  secid: 12345678 [Class ID]
+  student_number: 123456 [Optional and can be omitted]
+  schoolid: 123 [School ID]
+  termid: MP2 [Marking Period]
+}
+
+GET - https://portal.mcpsmd.org/guardian/prefs/assignmentGrade_CourseDetail.json
+Gets detailed course information (Rooms, emails, teacher name, etc.)
+{
+  secid: 12345678 [Class ID]
+  student_number: 123456 [Optional and can be omitted]
+  schoolid: 123 [School ID]
+  termid: MP1 [Marking Period]
+}
+
+GET - https://portal.mcpsmd.org/guardian/prefs/assignmentGrade_CategoryDetail.json
+Gets category data (Ex. HW or All Assignments)
+{
+  secid: 12345678 [Class ID]
+  student_number: 123456 [Optional and can be omitted]
+  schoolid: 123 [School ID]
+  termid: MP1 [Marking Period]
+}
+
+https://portal.mcpsmd.org/guardian/prefs/termsData.json
+Gets the marking periods / terms for a school
+{
+  schoolid: 123 [School ID]
+}
+
+
 BEHAVIORS
 ============
 - Upon session expiration / logout, all subsequent requests will redirect to login page (302 redirect maybe?)

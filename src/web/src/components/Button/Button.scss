@@ -1,0 +1,25 @@
+.button {
+  background-color: none;
+  border: 3px solid white;
+  border-radius: 50px;
+
+  color: white;
+  text-decoration: none;
+
+  font-family: "Montserrat", sans-serif;
+
+  transition: all 0.2s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+  }
+
+  & > p {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px 50px;
+    text-decoration: none;
+  }
+}
