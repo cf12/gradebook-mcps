@@ -2,12 +2,24 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const qs = require('qs')
-const agent = require('superagent').agent()
 
-const app = express()
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
 
 const MCPSHandler = require('./MCPSHandler.js')
 
+let superagent = require('superagent')
+superagent = require('superagent-proxy')(superagent)
+const agent = superagent.agent()
+
+const proxy = 'http://localhost:8888'
+
+const app = express()
+
+// Passport Setup
+
+
+// Express Setup
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
@@ -29,8 +41,18 @@ app.post('/api/login', (req, res) => {
   agent.post(url)
     .type('form')
     .send(data)
+    .proxy(proxy)
     .then(response => {
-      console.log(response)
+      // CONTEXT: Any number works for this GET param; this is "wtf mcps?" encoded in binary
+      const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
+
+      agent.get('https://portal.mcpsmd.org/guardian/prefs/gradeByCourseSecondary.json')
+        .proxy(proxy)
+        .query({ schoolid: schoolid })
+        .then(response => {
+          console.log(JSON.parse(response.text))
+        })
+
       res.status(200)
       res.end(response.text)
     })
