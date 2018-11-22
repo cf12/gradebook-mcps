@@ -46,7 +46,6 @@ class MCPSUser {
         .type('form')
         .send(data)
         .redirects(0)
-        .proxy(proxy)
         .then(() => {
           resolve(false)
         })
@@ -71,19 +70,21 @@ class MCPSUser {
   }
 
   getClasses () {
-    // Any number works for this GET param; this is "wtf mcps?" encoded in binary
-    const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
+    return new Promise((resolve, reject) => {
+      // Any number works for this GET param; this is "wtf mcps?" encoded in binary
+      const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
 
-    agent.get(baseURL + '/prefs/gradeByCourseSecondary.json')
-      .proxy(proxy)
-      .set('Cookie', this.cookies.map(e => e.cookieString()).join(';'))
-      .query({ schoolid: schoolid })
-      .then(response => {
-        console.log(JSON.parse(response.text))
-      })
-
-    res.status(200)
-    res.end(response.text)
+      request.get(baseURL + '/prefs/gradeByCourseSecondary.json')
+        .set('Cookie', this.cookies.map(e => e.cookieString()).join(';'))
+        .query({ schoolid: schoolid })
+        .then(response => {
+          console.log(response)
+          resolve(JSON.parse(response.text))
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 }
 
