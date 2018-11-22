@@ -1,23 +1,32 @@
 const express = require('express')
+const session = require('express-session')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const qs = require('qs')
 
-const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const RedisStore = require('connect-redis')(session)
+
+// const passport = require('passport')
+// const LocalStrategy = require('passport-local')
 
 const MCPSHandler = require('./MCPSHandler.js')
 
 let superagent = require('superagent')
-superagent = require('superagent-proxy')(superagent)
+// superagent = require('superagent-proxy')(superagent)
 const agent = superagent.agent()
 
 const proxy = 'http://localhost:8888'
 
 const app = express()
 
-// Passport Setup
-
+// Session Setup
+app.use(session({
+  store: new RedisStore(),
+  // TODO: Put in real secret
+  secret: 'TESTING',
+  signed: true,
+  resave: false
+}))
 
 // Express Setup
 app.use(cors())
@@ -25,6 +34,26 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 
 const PORT = process.env.port || 3001
+
+app.get('/api/redis', (req, res) => {
+  console.log(req.session)
+  req.session.thing = 'lmao'
+  res.status(200)
+  res.end('OK')
+})
+
+app.get('/api/smth', (req, res) => {
+  console.log(req.session)
+  res.status(200)
+  res.end('OK')
+})
+
+app.get('/api/logout', (req, res) => {
+  req.session.destroy()
+
+  res.status(200)
+  res.end('Logout successful')
+})
 
 app.post('/api/login', (req, res) => {
   const handler = new MCPSHandler(req.body.password)
