@@ -69,7 +69,7 @@ class MCPSUser {
           if (cookies.length === 4) {
             this.cookies = cookies
             this.cookieString = cookies.map(e => e.cookieString()).join(';')
-            this.expiration = Date.now() + (60 * 28)
+            this.expiration = Date.now() + (28 * 60 * 1000)
             resolve(true)
           } else {
             resolve(false)
@@ -78,18 +78,17 @@ class MCPSUser {
     })
   }
 
-  async getClassInfo (classID, term) {
+  async getClasses () {
     await this.reAuth()
-    return new Promise(async (resolve, reject) => {
 
+    return new Promise(async (resolve, reject) => {
       // Any number works for this GET param; this is "wtf mcps?" encoded in binary
-      const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
+      const schoolid = '1337'
 
       request.get(baseURL + '/guardian/prefs/gradeByCourseSecondary.json')
         .set('Cookie', this.cookieString)
         .query({ schoolid: schoolid })
         .then(response => {
-          console.log(response)
           resolve(JSON.parse(response.text))
         })
         .catch(err => {
@@ -98,16 +97,37 @@ class MCPSUser {
     })
   }
 
-  async getClasses () {
+  async getClassInfo (classID, schoolID, term) {
     await this.reAuth()
+
     return new Promise(async (resolve, reject) => {
-
-      // Any number works for this GET param; this is "wtf mcps?" encoded in binary
-      const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
-
-      request.get(baseURL + '/guardian/prefs/gradeByCourseSecondary.json')
+      request.get(baseURL + '/guardian/prefs/assignmentGrade_CourseDetail.json')
         .set('Cookie', this.cookieString)
-        .query({ schoolid: schoolid })
+        .query({
+          secid: classID,
+          schoolid: schoolID,
+          termid: term
+        })
+        .then(response => {
+          resolve(JSON.parse(response.text))
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  }
+
+  async getClassGrades (classID, schoolID, term) {
+    await this.reAuth()
+
+    return new Promise(async (resolve, reject) => {
+      request.get(baseURL + '/guardian/prefs/assignmentGrade_AssignmentDetail.json')
+        .set('Cookie', this.cookieString)
+        .query({
+          secid: classID,
+          schoolid: schoolID,
+          termid: term
+        })
         .then(response => {
           console.log(response)
           resolve(JSON.parse(response.text))

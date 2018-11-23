@@ -13,7 +13,7 @@ GET - https://portal.mcpsmd.org/guardian/home.html?ac=logoff
 Logs out
 
 GET - https://portal.mcpsmd.org/guardian/prefs/gradeByCourseSecondary.json
-Gets course data
+Gets course data for all courses
 
 GET - https://portal.mcpsmd.org/guardian/prefs/assignmentGrade_AssignmentDetail.json
 Gets all assignments from a course
@@ -22,7 +22,7 @@ Gets all assignments from a course
   student_number: 123456 [Optional and can be omitted]
   schoolid: 123 [School ID]
   termid: MP2 [Marking Period]
-}
+}k
 
 GET - https://portal.mcpsmd.org/guardian/prefs/assignmentGrade_CourseDetail.json
 Gets detailed course information (Rooms, emails, teacher name, etc.)

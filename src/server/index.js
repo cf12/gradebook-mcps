@@ -15,20 +15,23 @@ const app = express()
 const users = {}
 
 // TODO:
-// - Auth flow where if a user's session is still intact, but the MyMCPS session is out, it'll reauth the user automatically
 // - Data caching
 // - Data persisting from redis db to session
-// - Automatic reauth based on secondsleft endpoint
+// - Hook unauthorized function into express as middleware and modulate endpoints
 
 // Session Setup
 app.use(session({
   secret: config.secret,
-  // TODO: Set secure to true for HTTPS
-  // secure: true,
-  httpOnly: true,
-  signed: true,
+  resave: true,
+  saveUninitialized: true,
   name: config.cookieName,
-  resave: false
+  cookie: {
+    // TODO: Set secure to true for HTTPS
+    // secure: true,
+    httpOnly: true,
+    path: '/',
+    expires: new Date(Date.now() + (2 * 60 * 60 * 1000))
+  }
 }))
 
 app.use((req, res, next) => {
@@ -44,7 +47,9 @@ app.use((req, res, next) => {
 // Express Setup
 app.use(cors())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({ extended: true }))
+
+app.disable('x-powered-by')
 
 // Helpers
 function unauthorized (res) {
@@ -52,6 +57,7 @@ function unauthorized (res) {
   res.end('Unauthorized request')
 }
 
+// Endpoints
 app.get('/api/logSession', (req, res) => {
   console.log(req.session)
   res.status(200)
@@ -64,11 +70,48 @@ app.get('/api/logout', (req, res) => {
   res.end('Logout successful')
 })
 
-// TODO: Handle anonymous user
 app.get('/api/classes', (req, res) => {
   if (!req.session.user) return unauthorized(res)
 
   req.session.user.getClasses()
+    .then(data => {
+      res.status(200)
+      res.json(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+      res.end('An unexpected error has occurred')
+    })
+})
+
+app.get('/api/classinfo', (req, res) => {
+  if (!req.session.user) return unauthorized(res)
+
+  req.session.user.getClassInfo(
+    req.body.classID,
+    req.body.schoolID,
+    req.body.term
+  )
+    .then(data => {
+      res.status(200)
+      res.json(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+      res.end('An unexpected error has occurred')
+    })
+})
+
+app.get('/api/classgrades', (req, res) => {
+  if (!req.session.user) return unauthorized(res)
+
+  req.session.user.getClassGrades(
+    req.body.classID,
+    req.body.schoolID,
+    req.body.term
+  )
     .then(data => {
       res.status(200)
       res.json(data)
