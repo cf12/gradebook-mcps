@@ -18,6 +18,7 @@ const users = {}
 // - Auth flow where if a user's session is still intact, but the MyMCPS session is out, it'll reauth the user automatically
 // - Data caching
 // - Data persisting from redis db to session
+// - Automatic reauth based on secondsleft endpoint
 
 // Session Setup
 app.use(session({

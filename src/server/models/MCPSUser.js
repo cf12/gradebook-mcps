@@ -6,7 +6,7 @@ request = require('superagent-proxy')(request)
 
 const proxy = 'http://localhost:8888'
 
-const baseURL = 'https://portal.mcpsmd.org/guardian'
+const baseURL = 'https://portal.mcpsmd.org'
 
 class MCPSUser {
   constructor (username, password) {
@@ -30,9 +30,16 @@ class MCPSUser {
     return hmac.digest('hex')
   }
 
+  reAuth () {
+    return new Promise(async (resolve, reject) => {
+      if (this.expiration - Date.now() <= 0) await this.login()
+      resolve()
+    })
+  }
+
   login () {
     return new Promise((resolve, reject) => {
-      const url = baseURL + '/home.html'
+      const url = baseURL + '/guardian/home.html'
       const data = {
         account: this.username,
         ldappassword: this.password,
@@ -54,13 +61,15 @@ class MCPSUser {
           if (err.status !== 302) reject(err)
 
           const response = err.response
-          const cookies = response.headers['set-cookie'].map(tough.parse)
+          const cookies = response.headers['set-cookie'].map(e => tough.parse(e))
 
           console.log(cookies)
 
           // Cookie size check is just a precaution; valid logins should ALWAYS be a 302
           if (cookies.length === 4) {
             this.cookies = cookies
+            this.cookieString = cookies.map(e => e.cookieString()).join(';')
+            this.expiration = Date.now() + (60 * 28)
             resolve(true)
           } else {
             resolve(false)
@@ -69,13 +78,35 @@ class MCPSUser {
     })
   }
 
-  getClasses () {
-    return new Promise((resolve, reject) => {
+  async getClassInfo (classID, term) {
+    await this.reAuth()
+    return new Promise(async (resolve, reject) => {
+
       // Any number works for this GET param; this is "wtf mcps?" encoded in binary
       const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
 
-      request.get(baseURL + '/prefs/gradeByCourseSecondary.json')
-        .set('Cookie', this.cookies.map(e => e.cookieString()).join(';'))
+      request.get(baseURL + '/guardian/prefs/gradeByCourseSecondary.json')
+        .set('Cookie', this.cookieString)
+        .query({ schoolid: schoolid })
+        .then(response => {
+          console.log(response)
+          resolve(JSON.parse(response.text))
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
+  }
+
+  async getClasses () {
+    await this.reAuth()
+    return new Promise(async (resolve, reject) => {
+
+      // Any number works for this GET param; this is "wtf mcps?" encoded in binary
+      const schoolid = '011101110111010001100110001000000110110101100011011100000111001100111111'
+
+      request.get(baseURL + '/guardian/prefs/gradeByCourseSecondary.json')
+        .set('Cookie', this.cookieString)
         .query({ schoolid: schoolid })
         .then(response => {
           console.log(response)
