@@ -1,10 +1,10 @@
 import React from 'react'
 
-import './Button.scss'
+import './index.scss'
 
 const Button = (props) => {
   return (
-    <div className='button'>
+    <div className={'button fb-center ' + props.className} onClick={props.onClick}>
       <p>{props.text}</p>
     </div>
   )

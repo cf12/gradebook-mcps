@@ -85,11 +85,11 @@ app.get('/api/classes', (req, res) => {
     })
 })
 
-app.get('/api/classinfo', (req, res) => {
+app.get('/api/class/:id', (req, res) => {
   if (!req.session.user) return unauthorized(res)
 
   req.session.user.getClassInfo(
-    req.body.classID,
+    req.params.id,
     req.body.schoolID,
     req.body.term
   )
@@ -104,13 +104,49 @@ app.get('/api/classinfo', (req, res) => {
     })
 })
 
-app.get('/api/classgrades', (req, res) => {
+app.get('/api/class/:id/grades', (req, res) => {
   if (!req.session.user) return unauthorized(res)
 
   req.session.user.getClassGrades(
-    req.body.classID,
+    req.params.id,
     req.body.schoolID,
     req.body.term
+  )
+    .then(data => {
+      res.status(200)
+      res.json(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+      res.end('An unexpected error has occurred')
+    })
+})
+
+app.get('/api/class/:id/categories', (req, res) => {
+  if (!req.session.user) return unauthorized(res)
+
+  req.session.user.getClassCategories(
+    req.params.id,
+    req.body.schoolID,
+    req.body.term
+  )
+    .then(data => {
+      res.status(200)
+      res.json(data)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500)
+      res.end('An unexpected error has occurred')
+    })
+})
+
+app.get('/api/terms', (req, res) => {
+  if (!req.session.user) return unauthorized(res)
+
+  req.session.user.getTerms(
+    req.body.schoolID
   )
     .then(data => {
       res.status(200)
@@ -144,7 +180,6 @@ app.post('/api/login', (req, res) => {
       res.end('An unexpected error has occurred')
     })
 })
-
 
 app.listen(PORT)
 console.log('INFO >> Server started on port: ' + PORT)

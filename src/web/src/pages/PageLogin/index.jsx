@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
-import './PageLogin.scss'
 
-import MCPSHandler from './MCPSHandler.js'
+import './index.scss'
+
+import Button from '../../components/Button'
 
 class PageLogin extends React.Component {
   constructor () {
@@ -12,7 +13,8 @@ class PageLogin extends React.Component {
 
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      flashMsg: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -21,35 +23,18 @@ class PageLogin extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    console.log('SUBMIT EVENT')
 
-    console.log(this.state)
-
-    const handler = new MCPSHandler(this.state.password)
-    console.log(handler.getPw())
-
-    const url = 'https://portal.mcpsmd.org/guardian/home.html'
-    const data = {
-      account: this.state.username,
-      ldappassword: this.state.password,
-      contextData: handler.getContext(),
-      pw: handler.getPw(),
-      dbpw: handler.getDbpw()
-    }
-
-    axios({
-      method: 'POST',
-      url: 'https://cors-anywhere.herokuapp.com/' + url,
-      data: data,
-      // headers: { 'x-requested-with': 'localhost' }
+    axios.post('/api/login', {
+      username: this.state.username,
+      password: this.state.password
     })
       .then(res => {
         console.log(res)
+        this.props.history.push('/home')
       })
       .catch(err => {
-        console.error(err)
+        console.log(err)
       })
-
   }
 
   handleChange (e) {
@@ -65,26 +50,32 @@ class PageLogin extends React.Component {
       <div className='page-login fb-ccol'>
         <h1 className='page-login__title'>Welcome to Gradebook MCPS!</h1>
 
-        <form className='page-login__form' onSubmit={this.handleSubmit}>
-          <div className='fb-ccol'>
+        <form className='page-login__form'>
+          <div className='page-login__form__entry fb-col'>
             <label>Username / Student ID</label>
             <input
               name='username'
               onChange={this.handleChange}
-              />
+            />
           </div>
 
-          <div className='fb-ccol'>
+          <div className='page-login__form__entry fb-col'>
             <label>Password</label>
             <input
               name='password'
               type='password'
               onChange={this.handleChange}
-              />
+            />
           </div>
-
-          <button>Login</button>
         </form>
+
+        <Button
+          className='page-login__button'
+          text='LOGIN'
+          onClick={this.handleSubmit}
+        />
+
+        <p>Invalid Username / Password</p>
       </div>
     )
   }
