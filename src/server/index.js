@@ -30,7 +30,7 @@ app.use(session({
     // secure: true,
     httpOnly: true,
     path: '/',
-    expires: new Date(Date.now() + (2 * 60 * 60 * 1000))
+    maxAge: 28 * 60 * 1000
   }
 }))
 
@@ -161,9 +161,9 @@ app.get('/api/terms', (req, res) => {
 
 // TODO: Require username + password
 app.post('/api/login', (req, res) => {
-  const user = new MCPSUser(req.body.username, req.body.password)
+  const user = new MCPSUser(req.body.username)
 
-  user.login()
+  user.login(req.body.password)
     .then((loggedIn) => {
       if (loggedIn) {
         users[req.session.id] = user

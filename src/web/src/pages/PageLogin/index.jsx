@@ -1,7 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
-
+import { withRouter } from 'react-router'
 
 import './index.scss'
 
@@ -30,7 +29,8 @@ class PageLogin extends React.Component {
     })
       .then(res => {
         console.log(res)
-        this.props.history.push('/home')
+        console.log('Logged!')
+        this.props.history.push('/app')
       })
       .catch(err => {
         console.log(err)
@@ -81,4 +81,4 @@ class PageLogin extends React.Component {
   }
 }
 
-export default PageLogin
+export default withRouter(PageLogin)
