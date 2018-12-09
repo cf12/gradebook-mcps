@@ -1,16 +1,18 @@
 import React from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 import './index.scss'
 
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.login.loggedIn
+  }
+}
+
 class PageAppHome extends React.Component {
   constructor () {
     super()
-
-    this.state = {
-      logged: false
-    }
   }
 
   componentWillMount () {
@@ -18,7 +20,7 @@ class PageAppHome extends React.Component {
   }
 
   render () {
-    if (!this.state.logged) {
+    if (!this.props.loggedIn) {
       return <Redirect to='/login' />
     }
 
@@ -30,4 +32,4 @@ class PageAppHome extends React.Component {
   }
 }
 
-export default PageAppHome
+export default connect(mapStateToProps, null)(PageAppHome)

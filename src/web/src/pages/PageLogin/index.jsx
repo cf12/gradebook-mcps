@@ -1,10 +1,28 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import axios from 'axios'
-import { withRouter } from 'react-router'
 
 import './index.scss'
 
+import { LOG_IN } from '../../redux/constants/actions'
+
 import Button from '../../components/Button'
+
+const mapStateToProps = (state) => {
+  return {
+    loggedIn: state.login.loggedIn
+  }
+}
+
+const mapDispatchToProps = (dispatcher) => {
+  return {
+    logIn: () => {
+      dispatcher({
+        type: LOG_IN
+      })
+    }
+  }
+}
 
 class PageLogin extends React.Component {
   constructor () {
@@ -30,6 +48,7 @@ class PageLogin extends React.Component {
       .then(res => {
         console.log(res)
         console.log('Logged!')
+        this.props.logIn()
         this.props.history.push('/app')
       })
       .catch(err => {
@@ -50,7 +69,7 @@ class PageLogin extends React.Component {
       <div className='page-login fb-ccol'>
         <h1 className='page-login__title'>Welcome to Gradebook MCPS!</h1>
 
-        <form className='page-login__form'>
+        <form className='page-login__form' onSubmit={this.handleSubmit}>
           <div className='page-login__form__entry fb-col'>
             <label>Username / Student ID</label>
             <input
@@ -67,6 +86,8 @@ class PageLogin extends React.Component {
               onChange={this.handleChange}
             />
           </div>
+
+          <input type='submit' style={{ display: 'none' }} />
         </form>
 
         <Button
@@ -81,4 +102,4 @@ class PageLogin extends React.Component {
   }
 }
 
-export default withRouter(PageLogin)
+export default connect(mapStateToProps, mapDispatchToProps)(PageLogin)
