@@ -5,10 +5,11 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import { store, persistor } from './redux'
 
+import { RestrictedRoute } from './components'
 import {
   PageHome,
   PageLogin,
-  PageAppHome,
+  PageApp,
   Page404
 } from './pages'
 
@@ -23,7 +24,7 @@ const App = () => {
           <Switch>
             <Route exact path='/' component={PageHome} />
             <Route path='/login' component={PageLogin} />
-            <Route path='/app' component={PageAppHome} />
+            <RestrictedRoute path='/app' component={PageApp} />
             <Route component={Page404} />
           </Switch>
         </BrowserRouter>

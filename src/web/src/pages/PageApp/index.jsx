@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
   }
 }
 
-class PageAppHome extends React.Component {
+class PageApp extends React.Component {
   constructor () {
     super()
   }
@@ -20,10 +20,6 @@ class PageAppHome extends React.Component {
   }
 
   render () {
-    if (!this.props.loggedIn) {
-      return <Redirect to='/login' />
-    }
-
     return (
       <div>
         <p>App Home</p>
@@ -32,4 +28,4 @@ class PageAppHome extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, null)(PageAppHome)
+export default connect(mapStateToProps, null)(PageApp)

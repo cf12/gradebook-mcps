@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router'
 import axios from 'axios'
 
 import './index.scss'
@@ -65,6 +66,10 @@ class PageLogin extends React.Component {
   }
 
   render () {
+    if (this.props.loggedIn) {
+      return <Redirect to='/app' />
+    }
+
     return (
       <div className='page-login fb-ccol'>
         <h1 className='page-login__title'>Welcome to Gradebook MCPS!</h1>

@@ -1,11 +1,11 @@
 import PageHome from './PageHome'
 import PageLogin from './PageLogin'
-import PageAppHome from './PageAppHome'
+import PageApp from './PageApp'
 import Page404 from './Page404'
 
 export {
   PageHome,
   PageLogin,
-  PageAppHome,
+  PageApp,
   Page404
 }

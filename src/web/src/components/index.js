@@ -1,5 +1,7 @@
 import Button from './Button'
+import RestrictedRoute from './RestrictedRoute'
 
 export {
-  Button
+  Button,
+  RestrictedRoute
 }
