@@ -558,3 +558,5 @@ ASALocalRun/
 config.json
 
 testing/data.json
+
+.pnp.js

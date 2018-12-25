@@ -1,0 +1,24 @@
+@import '../../styles/colors.scss';
+
+.page-class {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $color-dark-4;
+
+  font-family: 'Nunito', sans-serif;
+
+  &__top {
+
+    &__image {
+      margin-left: 800px;
+    }
+  }
+
+  &__grades {
+
+
+    &__legend {
+
+    }
+  }
+}

@@ -54,20 +54,33 @@ app.disable('x-powered-by')
 // Helpers
 function unauthorized (res) {
   res.status(401)
-  res.end('Unauthorized request')
+  res.json({
+    error: 'Unauthorized request'
+  })
+}
+
+function die (res, err) {
+  console.error(err)
+  res.status(500)
+  res.json({
+    error: 'An unexpected error has occurred'
+  })
 }
 
 // Endpoints
-app.get('/api/logSession', (req, res) => {
-  console.log(req.session)
+app.get('/api/session', (req, res) => {
   res.status(200)
-  res.end('OK')
+  res.json({
+    loggedIn: !!req.session.user
+  })
 })
 
 app.get('/api/logout', (req, res) => {
   req.session.destroy()
   res.status(200)
-  res.end('Logout successful')
+  res.json({
+    info: 'Logout successful'
+  })
 })
 
 app.get('/api/classes', (req, res) => {
@@ -78,11 +91,7 @@ app.get('/api/classes', (req, res) => {
       res.status(200)
       res.json(data)
     })
-    .catch(err => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch(err => die(res, err))
 })
 
 app.get('/api/class/:id', (req, res) => {
@@ -97,11 +106,7 @@ app.get('/api/class/:id', (req, res) => {
       res.status(200)
       res.json(data)
     })
-    .catch(err => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch(err => die(res, err))
 })
 
 app.get('/api/class/:id/grades', (req, res) => {
@@ -116,11 +121,7 @@ app.get('/api/class/:id/grades', (req, res) => {
       res.status(200)
       res.json(data)
     })
-    .catch(err => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch(err => die(res, err))
 })
 
 app.get('/api/class/:id/categories', (req, res) => {
@@ -135,11 +136,7 @@ app.get('/api/class/:id/categories', (req, res) => {
       res.status(200)
       res.json(data)
     })
-    .catch(err => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch(err => die(res, err))
 })
 
 app.get('/api/terms', (req, res) => {
@@ -152,11 +149,7 @@ app.get('/api/terms', (req, res) => {
       res.status(200)
       res.json(data)
     })
-    .catch(err => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch(err => die(res, err))
 })
 
 // TODO: Require username + password
@@ -168,17 +161,17 @@ app.post('/api/login', (req, res) => {
       if (loggedIn) {
         users[req.session.id] = user
         res.status(200)
-        res.end('Login successful')
+        res.json({
+          info: 'Login successful'
+        })
       } else {
         res.status(401)
-        res.end('Invalid username and / or password')
+        res.json({
+          error: 'Invalid username and / or password'
+        })
       }
     })
-    .catch((err) => {
-      console.error(err)
-      res.status(500)
-      res.end('An unexpected error has occurred')
-    })
+    .catch((err) => die(res, err))
 })
 
 app.listen(PORT)

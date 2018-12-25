@@ -4,9 +4,10 @@ import * as serviceWorker from './serviceWorker';
 
 import App from './App';
 
-import './styles/_globals.scss'
-import './styles/_flexbox.scss'
-import './styles/_fonts.scss'
+import './styles/globals.scss'
+import './styles/flexbox.scss'
+import './styles/fonts.scss'
+import './styles/colors.scss'
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
