@@ -38,7 +38,7 @@ app.use((req, res, next) => {
   if (req.session.id in users) {
     req.session.user = users[req.session.id]
   } else {
-    req.session.user = undefined
+    req.session.user = null
   }
 
   next()
@@ -154,6 +154,14 @@ app.get('/api/terms', (req, res) => {
 
 // TODO: Require username + password
 app.post('/api/login', (req, res) => {
+  if (req.session.user) {
+    res.status(409)
+    res.json({
+      error: 'Already authenticated'
+    })
+    return
+  }
+
   const user = new MCPSUser(req.body.username)
 
   user.login(req.body.password)
