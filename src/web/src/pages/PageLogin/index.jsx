@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router'
 import axios from 'axios'
 
 import './index.scss'
@@ -17,9 +16,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatcher) => {
   return {
-    logIn: () => {
+    logIn: (expires) => {
       dispatcher({
-        type: LOG_IN
+        type: LOG_IN,
+        expires: expires
       })
     }
   }
@@ -49,7 +49,7 @@ class PageLogin extends React.Component {
       .then(res => {
         console.log(res)
         console.log('Logged!')
-        this.props.logIn()
+        this.props.logIn(res.data.expires)
         this.props.history.push('/app')
       })
       .catch(err => {
@@ -66,10 +66,6 @@ class PageLogin extends React.Component {
   }
 
   render () {
-    if (this.props.loggedIn) {
-      return <Redirect to='/app' />
-    }
-
     return (
       <div className='page-login fb-ccol'>
         <h1 className='page-login__title'>Welcome to Gradebook MCPS!</h1>

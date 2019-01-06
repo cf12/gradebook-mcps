@@ -7,4 +7,3 @@ export default (history) => combineReducers({
   router: connectRouter(history),
   login: login
 })
-

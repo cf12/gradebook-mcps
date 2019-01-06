@@ -7,10 +7,11 @@ import { store, persistor } from './redux'
 
 import { RestrictedRoute } from './components'
 import {
-  PageHome,
-  PageLogin,
+  Page404,
   PageApp,
-  Page404
+  PageClass,
+  PageHome,
+  PageLogin
 } from './pages'
 
 import 'normalize.css'
@@ -25,6 +26,7 @@ const App = () => {
             <Route exact path='/' component={PageHome} />
             <Route path='/login' component={PageLogin} />
             <RestrictedRoute path='/app' component={PageApp} />
+            <RestrictedRoute path='/class/:id' component={PageClass} />
             <Route component={Page404} />
           </Switch>
         </BrowserRouter>

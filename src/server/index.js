@@ -7,6 +7,7 @@ const qs = require('qs')
 
 const config = require('./config/config.json')
 const PORT = process.env.port || 3001
+const sessionDuration = (28 * 60 * 1000)
 
 const MCPSUser = require('./models/MCPSUser.js')
 
@@ -30,7 +31,7 @@ app.use(session({
     // secure: true,
     httpOnly: true,
     path: '/',
-    maxAge: 28 * 60 * 1000
+    maxAge: sessionDuration
   }
 }))
 
@@ -88,6 +89,15 @@ app.get('/api/classes', (req, res) => {
 
   req.session.user.getClasses()
     .then(data => {
+      data = data.filter(entry => {
+        const blacklist = [
+          'HOMEROOM',
+          'COUNSELOR',
+          'LUNCH'
+        ]
+        return !blacklist.includes(entry.courseName)
+      })
+
       res.status(200)
       res.json(data)
     })
@@ -99,8 +109,8 @@ app.get('/api/class/:id', (req, res) => {
 
   req.session.user.getClassInfo(
     req.params.id,
-    req.body.schoolID,
-    req.body.term
+    req.query.schoolID,
+    req.query.term
   )
     .then(data => {
       res.status(200)
@@ -114,8 +124,8 @@ app.get('/api/class/:id/grades', (req, res) => {
 
   req.session.user.getClassGrades(
     req.params.id,
-    req.body.schoolID,
-    req.body.term
+    req.query.schoolID,
+    req.query.term
   )
     .then(data => {
       res.status(200)
@@ -129,8 +139,8 @@ app.get('/api/class/:id/categories', (req, res) => {
 
   req.session.user.getClassCategories(
     req.params.id,
-    req.body.schoolID,
-    req.body.term
+    req.query.schoolID,
+    req.query.term
   )
     .then(data => {
       res.status(200)
@@ -143,7 +153,7 @@ app.get('/api/terms', (req, res) => {
   if (!req.session.user) return unauthorized(res)
 
   req.session.user.getTerms(
-    req.body.schoolID
+    req.query.schoolID
   )
     .then(data => {
       res.status(200)
@@ -170,7 +180,8 @@ app.post('/api/login', (req, res) => {
         users[req.session.id] = user
         res.status(200)
         res.json({
-          info: 'Login successful'
+          info: 'Login successful',
+          expires: Date.now() + sessionDuration
         })
       } else {
         res.status(401)

@@ -1,10 +1,6 @@
 const crypto = require('crypto')
 const tough = require('tough-cookie')
-
-let request = require('superagent')
-request = require('superagent-proxy')(request)
-
-const proxy = 'http://localhost:8888'
+const request = require('superagent')
 
 const baseURL = 'https://portal.mcpsmd.org'
 
@@ -60,7 +56,6 @@ class MCPSUser {
           // Cookie size check is just a precaution; valid logins should ALWAYS be a 302
           if (cookies.length === 4) {
             this.cookies = cookies.map(e => e.cookieString()).join(';')
-            this.expiration = Date.now() + (28 * 60 * 1000)
             resolve(true)
           } else {
             resolve(false)
@@ -75,7 +70,15 @@ class MCPSUser {
         .set('Cookie', this.cookies)
         .query(data)
         .then(response => {
-          resolve(JSON.parse(response.text))
+          let data = JSON.parse(response.text)
+
+          // MCPS likes to append empty objects to response arrays ¯\_(ツ)_/¯
+          // This filters those out
+          if (data instanceof Array) {
+            data = data.filter(value => Object.keys(value).length !== 0)
+          }
+
+          resolve(data)
         })
         .catch(err => {
           reject(err)
