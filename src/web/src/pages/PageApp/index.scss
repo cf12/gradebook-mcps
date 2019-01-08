@@ -30,19 +30,49 @@
   &__hero {
     display: flex;
     justify-content: center;
+    margin: 100px 0;
+
+    & > img {
+      box-shadow: 2px 2px 12px 0 rgba(0, 0, 0, 0.4);
+    }
 
     &__info {
-      margin-left: 20px;
+      margin-left: 40px;
+
+      & > h3 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 200;
+        font-size: 18px;
+        letter-spacing: 2px;
+
+        color: $dark2;
+      }
+
+      & > h1 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 60px;
+        color: $primary1;
+      }
+
+      & > p {
+
+      }
     }
   }
 
   &__classes {
-    column-count: 2;
-    column-gap: 20px;
-    column-width: 600px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    width: 1400px;
 
     & > * {
-      margin-bottom: 20px;
+      flex-basis: 600px;
+      margin: 10px;
     }
   }
 }

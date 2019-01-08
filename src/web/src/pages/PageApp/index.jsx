@@ -46,7 +46,7 @@ class PageApp extends React.Component {
     }
 
     return (
-      <div className='page-app'>
+      <div className='page-app fb-ccol'>
         <div className='page-app__top fb-ccol'>
           <h1>Welcome Back - {name}!</h1>
           <h3>Your grades since {time}</h3>
@@ -55,8 +55,9 @@ class PageApp extends React.Component {
         <div className='page-app__hero'>
           <img
             src={require('../../assets/images/school-sample.jpg')}
-            width='600px'
-            height='400px'
+            width='500px'
+            height='300px'
+            alt='school'
           />
           <div className='page-app__hero__info'>
             <h3>SCHOOL INFO</h3>
