@@ -15,34 +15,49 @@ class PageClass extends React.Component {
 
     this.state = {
       loaded: false,
-      data: null
+      classData: null,
+      gradesData: null
     }
   }
 
-  componentWillMount () {
+  async componentWillMount () {
     const id = this.props.match.params.id
     const searchParams = this.props.location.search
 
-    axios.get(`/api/class/${id}/grades${searchParams}`)
-      .then(res => {
-        console.log(res)
-        this.setState({
-          loaded: true,
-          data: res.data
-        })
-      })
+    const classData = await axios.get(`/api/class/${id}${searchParams}`)
+    console.log(classData.data)
+    const gradesData = await axios.get(`/api/class/${id}/grades${searchParams}`)
+
+    this.setState({
+      loaded: true,
+      classData: classData.data,
+      gradesData: gradesData.data
+    })
   }
 
   render () {
+    if (!this.state.loaded) {
+      return <p>Loading...</p>
+    }
+
+    const {
+      teacher,
+      room,
+      period,
+      courseName: name,
+      email_addr: email,
+    } = this.state.classData
+
     return (
       <div className='page-class fb-ccol'>
         <div className='page-class__top fb-row'>
           <div className='page-class__top__info'>
-            <h1></h1>
+            <h1>{name}</h1>
             <div className='separator' />
-            <p>Mrs. English Teacher</p>
-            <p>Period 1</p>
-            <p>Room 123</p>
+            <p>{teacher}</p>
+            <p>{email}</p>
+            <p>Period {period}</p>
+            <p>Room {room}</p>
           </div>
 
           <img
@@ -74,8 +89,8 @@ class PageClass extends React.Component {
               </tr>
               {
                 (this.state.loaded)
-                  ? this.state.data.map(entry => (
-                    <tr className='page-class__grades__table__entry'>
+                  ? this.state.gradesData.map((entry, index) => (
+                    <tr className='page-class__grades__table__entry' key={index}>
                       <th className='page-class__grades__table__entry__icon fb-center'>
                         <IoMdArrowDropdown size='30px' />
                       </th>

@@ -47,8 +47,6 @@ class PageLogin extends React.Component {
       password: this.state.password
     })
       .then(res => {
-        console.log(res)
-        console.log('Logged!')
         this.props.logIn(res.data.expires)
         this.props.history.push('/app')
       })
@@ -67,37 +65,44 @@ class PageLogin extends React.Component {
 
   render () {
     return (
-      <div className='page-login fb-ccol'>
-        <h1 className='page-login__title'>Welcome to Gradebook MCPS!</h1>
+      <div className='page-login fb-crow'>
+        <div className='page-login__left'>
+          <img></img>
+        </div>
 
-        <form className='page-login__form' onSubmit={this.handleSubmit}>
-          <div className='page-login__form__entry fb-col'>
-            <label>Username / Student ID</label>
-            <input
-              name='username'
-              onChange={this.handleChange}
-            />
-          </div>
+        <div className='page-login__right fb-ccol'>
+          <h1 className='page-login__right__title'>GRADEBOOK MCPS</h1>
+          <h3 className='page-login__right__subtitle'>Please login with your MCPS issued username and password.</h3>
 
-          <div className='page-login__form__entry fb-col'>
-            <label>Password</label>
-            <input
-              name='password'
-              type='password'
-              onChange={this.handleChange}
-            />
-          </div>
+          <form className='page-login__right__form' onSubmit={this.handleSubmit}>
+            <div className='page-login__right__form__entry fb-col'>
+              <label>Username / Student ID</label>
+              <input
+                name='username'
+                onChange={this.handleChange}
+              />
+            </div>
 
-          <input type='submit' style={{ display: 'none' }} />
-        </form>
+            <div className='page-login__right__form__entry fb-col'>
+              <label>Password</label>
+              <input
+                name='password'
+                type='password'
+                onChange={this.handleChange}
+              />
+            </div>
 
-        <Button
-          className='page-login__button'
-          text='LOGIN'
-          onClick={this.handleSubmit}
-        />
+            <input type='submit' style={{ display: 'none' }} />
+          </form>
 
-        <p>Invalid Username / Password</p>
+          <Button
+            className='page-login__right__button'
+            text='LOGIN'
+            onClick={this.handleSubmit}
+          />
+
+          <p>{this.state.flashMsg}</p>
+        </div>
       </div>
     )
   }

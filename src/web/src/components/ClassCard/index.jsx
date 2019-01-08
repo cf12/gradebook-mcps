@@ -60,7 +60,7 @@ class ClassCard extends React.Component {
         />
 
         <div className='class-card__info'>
-          <h1 className='class-card__info__name'>{name}</h1>
+          <h1>{name}</h1>
           <p>{teacher}</p>
           <p>{email}</p>
           <p>Room {room}</p>
@@ -70,7 +70,7 @@ class ClassCard extends React.Component {
           <p>{percent}%</p>
         </div>
         <div className='class-card__period'>
-          <p>{parseInt(period)}</p>
+          <p>{parseInt(period, 10)}</p>
         </div>
         <div className='class-card__next'/>
       </Link>

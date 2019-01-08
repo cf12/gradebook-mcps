@@ -3,7 +3,7 @@
 .page-class {
   width: 100%;
   min-height: 100vh;
-  background-color: $color-dark-4;
+  background-color: $dark4;
 
   font-family: 'Nunito', sans-serif;
 
@@ -23,7 +23,7 @@
         margin: 0 0 5px;
         font-size: 18px;
         font-weight: 500;
-        color: $color-dark-3;
+        color: $dark3;
       }
     }
 
@@ -45,7 +45,7 @@
       font-weight: 300;
       letter-spacing: 4px;
 
-      color: $color-dark-3;
+      color: $dark3;
     }
 
     &__searchbar {
@@ -54,11 +54,11 @@
       margin-bottom: 30px;
       display: flex;
 
-      background-color: $color-dark-5;
+      background-color: $dark5;
       box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.2);
 
       &__icon {
-        color: $color-dark-3;
+        color: $dark3;
         width: 60px;
         height: 60px;
         box-sizing: border-box;
@@ -85,10 +85,10 @@
 
       &__legend {
         height: 50px;
-        background-color: $color-dark-5;
+        background-color: $dark5;
 
         font-family: 'Montserrat', sans-serif;
-        color: $color-dark-3;
+        color: $dark3;
 
         & > th {
           text-align: left;
@@ -101,8 +101,8 @@
       &__entry {
         height: 60px;
         background-color: white;
-        border-top: 1px solid $color-dark-5;
-        border-bottom: 1px solid $color-dark-5;
+        border-top: 1px solid $dark5;
+        border-bottom: 1px solid $dark5;
         cursor: pointer;
 
         &__icon {
@@ -114,7 +114,7 @@
           text-align: left;
           font-size: 16px;
           font-weight: 400;
-          color: $color-dark-2;
+          color: $dark2;
         }
 
         &__grade {
