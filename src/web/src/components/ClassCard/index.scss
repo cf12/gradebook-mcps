@@ -20,6 +20,18 @@
     box-shadow: 2px 2px 12px 3px rgba(0, 0, 0, 0.2);
   }
 
+  &::before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+
+    width: 8px;
+    height: 100%;
+
+    background-color: $secondary1;
+  }
+
   &__image {
     width: 100px;
     height: 100px;
@@ -44,10 +56,11 @@
 
   &__grade {
     position: absolute;
+    left: 35px;
+    bottom: 25px;
+
     width: 40px;
     height: 40px;
-    bottom: 25px;
-    left: 35px;
 
     background-color: rgba(75, 225, 86, 0.7);
     border-radius: 50%;
@@ -64,20 +77,24 @@
 
   &__period {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    top: 25px;
-    right: 35px;
+    top: 0;
+    right: 0;
 
-    background-color: rgba(75, 145, 225, 0.7);
-    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+
+    background-color: $secondary1;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    filter: drop-shadow(0 0 20px black);
 
     & > p {
+      position: absolute;
+      right: 15px;
+      top: 10px;
       margin: 0;
-      line-height: 40px;
-      text-align: center;
 
       font-weight: 700;
+      font-size: 24px;
       color: white;
     }
   }

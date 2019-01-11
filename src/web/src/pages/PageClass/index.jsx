@@ -25,7 +25,6 @@ class PageClass extends React.Component {
     const searchParams = this.props.location.search
 
     const classData = await axios.get(`/api/class/${id}${searchParams}`)
-    console.log(classData.data)
     const gradesData = await axios.get(`/api/class/${id}/grades${searchParams}`)
 
     this.setState({
@@ -82,7 +81,7 @@ class PageClass extends React.Component {
               <tr className='page-class__grades__table__legend'>
                 <th width='80px' />
                 <th width='80px' />
-                <th>CATEGORY</th>
+                <th width='250px'>CATEGORY</th>
                 <th>ASSIGNMENT</th>
                 <th>DUE DATE</th>
                 <th>GRADE</th>
@@ -91,6 +90,7 @@ class PageClass extends React.Component {
                 (this.state.loaded)
                   ? this.state.gradesData.map((entry, index) => (
                     <tr className='page-class__grades__table__entry' key={index}>
+                      <div className='page-class__grades__table__entry__line' />
                       <th className='page-class__grades__table__entry__icon fb-center'>
                         <IoMdArrowDropdown size='30px' />
                       </th>

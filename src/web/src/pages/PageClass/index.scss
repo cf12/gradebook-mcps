@@ -21,7 +21,7 @@
 
       & > p {
         margin: 0 0 5px;
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 500;
         color: $dark3;
       }
@@ -33,7 +33,7 @@
   }
 
   &__grades {
-    width: 1000px;
+    width: 1200px;
 
     & > h2 {
       width: 100%;
@@ -98,12 +98,26 @@
         }
       }
 
+      &__line {
+        position: absolute;
+        left: 0;
+
+        width: 4px;
+        height: 60px;
+        background-color: $green;
+      }
+
       &__entry {
+        box-sizing: border-box;
         height: 60px;
         background-color: white;
         border-top: 1px solid $dark5;
         border-bottom: 1px solid $dark5;
         cursor: pointer;
+
+        border-left: 4px solid $green;
+        outline-offset: -4px;
+
 
         &__icon {
           width: 100%;

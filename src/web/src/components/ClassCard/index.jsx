@@ -57,6 +57,7 @@ class ClassCard extends React.Component {
         <img
           className='class-card__image'
           src={require('../../assets/images/english.png')}
+          alt=''
         />
 
         <div className='class-card__info'>

@@ -67,7 +67,6 @@ class PageLogin extends React.Component {
     return (
       <div className='page-login fb-crow'>
         <div className='page-login__left'>
-          <img></img>
         </div>
 
         <div className='page-login__right fb-ccol'>
