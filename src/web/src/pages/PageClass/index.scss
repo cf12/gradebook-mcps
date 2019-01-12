@@ -96,15 +96,14 @@
           font-weight: 500;
           letter-spacing: 3px;
         }
-      }
 
-      &__line {
-        position: absolute;
-        left: 0;
-
-        width: 4px;
-        height: 60px;
-        background-color: $green;
+        &__line {
+          position: absolute;
+          width: 3px;
+          height: 51px;
+          padding: 0;
+          background-color: $dark3;
+        }
       }
 
       &__entry {
@@ -115,9 +114,13 @@
         border-bottom: 1px solid $dark5;
         cursor: pointer;
 
-        border-left: 4px solid $green;
-        outline-offset: -4px;
-
+        &__line {
+          position: absolute;
+          padding: 0;
+          width: 3px;
+          height: 63px;
+          background-color: $green;
+        }
 
         &__icon {
           width: 100%;

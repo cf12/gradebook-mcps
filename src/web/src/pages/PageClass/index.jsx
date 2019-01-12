@@ -77,20 +77,24 @@ class PageClass extends React.Component {
           </div>
 
           <table className='page-class__grades__table'>
-            <tbody>
+            <thead>
+              {/* TODO: SCSS flow is broken here lmao */}
+              <div className='page-class__grades__table__legend__line' />
               <tr className='page-class__grades__table__legend'>
                 <th width='80px' />
                 <th width='80px' />
                 <th width='250px'>CATEGORY</th>
-                <th>ASSIGNMENT</th>
+                <th width='500px'>ASSIGNMENT</th>
                 <th>DUE DATE</th>
                 <th>GRADE</th>
               </tr>
+            </thead>
+            <tbody>
               {
                 (this.state.loaded)
                   ? this.state.gradesData.map((entry, index) => (
                     <tr className='page-class__grades__table__entry' key={index}>
-                      <div className='page-class__grades__table__entry__line' />
+                      <th className='page-class__grades__table__entry__line' />
                       <th className='page-class__grades__table__entry__icon fb-center'>
                         <IoMdArrowDropdown size='30px' />
                       </th>
